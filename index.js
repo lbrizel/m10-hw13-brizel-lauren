@@ -117,7 +117,7 @@ const displayWeatherInfo = (weatherObj) => {
 
   // time weather was last updated
   const updatedAt = document.createElement('p')
-  updatedAt.textContent = "Last updated: " +
+  updatedAt.textContent = 'Last Updated: '
     weatherObj.updatedAt.toLocaleTimeString(
       'en-US',
       {
