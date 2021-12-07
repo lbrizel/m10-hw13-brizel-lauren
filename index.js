@@ -32,31 +32,30 @@ async function getWeather(query) {
     query +
     '&units=imperial&appid=6efff70fe1477748e31c17d1c504635f'
   )
-    const data = await res.json
-      // location not found, throw error/reject promise
-      if (data.cod === "404") throw new Error('location not found')
-      // create weather icon URL
-      const iconUrl = 'https://openweathermap.org/img/wn/' +
-        data.weather[0].icon +
-        '@2x.png'
-      const description = data.weather[0].description
-      const actualTemp = data.main.temp
-      const feelsLikeTemp = data.main.feels_like
-      const place = data.name + ", " + data.sys.country
-      // create JS date object from Unix timestamp
-      const updatedAt = new Date(data.dt * 1000)
-      // this object is used by displayWeatherInfo to update the HTML
-      return {
-        coords: data.coord.lat + ',' + data.coord.lon,
-        description: description,
-        iconUrl: iconUrl,
-        actualTemp: actualTemp,
-        feelsLikeTemp: feelsLikeTemp,
-        place: place,
-        updatedAt: updatedAt
-      }
-    }
-
+  const data = await res.json()
+  // location not found, throw error/reject promise
+  if (data.cod === "404") throw new Error('location not found')
+  // create weather icon URL
+  const iconUrl = 'https://openweathermap.org/img/wn/' +
+    data.weather[0].icon +
+    '@2x.png'
+  const description = data.weather[0].description
+  const actualTemp = data.main.temp
+  const feelsLikeTemp = data.main.feels_like
+  const place = data.name + ", " + data.sys.country
+  // create JS date object from Unix timestamp
+  const updatedAt = new Date(data.dt * 1000)
+  // this object is used by displayWeatherInfo to update the HTML
+  return {
+    coords: data.coord.lat + ',' + data.coord.lon,
+    description: description,
+    iconUrl: iconUrl,
+    actualTemp: actualTemp,
+    feelsLikeTemp: feelsLikeTemp,
+    place: place,
+    updatedAt: updatedAt
+  }
+}
 
 // show error message when location isn't found
 function displayLocNotFound() {
@@ -69,12 +68,15 @@ function displayLocNotFound() {
 }
 
 // updates HTML to display weather info
-function displayWeatherInfo(weatherObj) {
-  // clears any previous weather info
+// clears any previous weather info
+const displayWeatherInfo = (weatherObj) => {
   weatherContainer.innerHTML = "";
+
+
 
   // inserts a linebreak <br> to weather section tag
   const addBreak = () => { weatherContainer.appendChild(document.createElement('br')) }
+
 
   // weather location element
   const placeName = document.createElement('h2')
@@ -103,16 +105,12 @@ function displayWeatherInfo(weatherObj) {
 
   // current temperature
   const temp = document.createElement('p')
-  temp.textContent = "Current: " +
-    weatherObj.actualTemp +
-    "° F"
+  temp.textContent = `Current: ${weatherObj.actualTemp}° F`
   weatherContainer.appendChild(temp)
 
   // "feels like" temperature
   const feelsLikeTemp = document.createElement('p')
-  feelsLikeTemp.textContent = "Feels like: " +
-    weatherObj.feelsLikeTemp +
-    "° F"
+  feelsLikeTemp.textContent = `Feels like: ${weatherObj.feelsLikeTemp}° F`
   weatherContainer.appendChild(feelsLikeTemp)
 
   addBreak()
